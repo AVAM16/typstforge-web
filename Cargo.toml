@@ -1,0 +1,22 @@
+[package]
+name = "typstforge-web"
+version = "0.1.0"
+authors = ["AVAM <arturvasco.martins@gmail.com>"]
+description = "A web application for TypstForge, a tool for creating and managing pdfs."
+license = "MIT"
+edition = "2024"
+repository = "https://github.com/AVAM16/typstforger-web"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2"
+typst-bake = "0.1"
+js-sys = "0.3.95"
+serde = { version = "1.0.228", features = ["derive"] }
+serde-wasm-bindgen = "0.6.5"
+
+[package.metadata.typst-bake]
+template-dir = "./resources"
+fonts-dir = "./resources"
