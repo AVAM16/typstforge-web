@@ -2,17 +2,18 @@ use serde::Deserialize;
 use typst_bake::{IntoDict, IntoValue};
 use wasm_bindgen::prelude::*;
 
-#[derive(IntoValue, IntoDict, Deserialize)]
+#[derive(Deserialize, IntoValue, IntoDict)]
 struct Inputs {
-    title: String,
-    date: String,
-    sections: Vec<Section>,
+    pub font: String,
+    pub title: String,
+    pub date: String,
+    pub sections: Vec<Section>,
 }
 
-#[derive(IntoValue, IntoDict, Deserialize)]
+#[derive(Deserialize, IntoValue, IntoDict)]
 struct Section {
-    title: String,
-    content: String,
+    pub title: String,
+    pub content: String,
 }
 
 #[wasm_bindgen]

@@ -1,9 +1,9 @@
 #import sys: inputs
 
 #set page(paper: "a4")
-#set text(font: "TeX Gyre Cursor", 11pt)
+#set text(font: inputs.font, 11pt)
 
-Title: #inputs.title
+#text(size: 14pt)[#align(center)[*#inputs.title*]]
 
 Date: #inputs.date
 

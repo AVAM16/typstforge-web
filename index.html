@@ -3,12 +3,46 @@
     <head>
         <meta charset="utf-8" />
         <title>Typst Forge</title>
-        <link rel="stylesheet" href="style.css" />
+        <!-- Added a query parameter to cache-bust the CSS -->
+        <link rel="stylesheet" href="style.css?v=1" />
     </head>
     <body>
         <!-- Sidebar containing the form -->
         <div id="sidebar">
-            <h2>Document Settings</h2>
+            <div
+                style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 15px;
+                "
+            >
+                <h2 style="margin: 0">Document Settings</h2>
+                <button
+                    id="btn-theme-toggle"
+                    style="
+                        padding: 8px;
+                        font-size: 12px;
+                        width: auto;
+                        background-color: #333;
+                        color: white;
+                    "
+                >
+                    Toggle Theme
+                </button>
+            </div>
+
+            <div class="form-group">
+                <label for="font-select">Font:</label>
+                <select id="font-select">
+                    <option value="FreeSans" selected>
+                        FreeSans (default)
+                    </option>
+                    <option value="FreeSerif">FreeSerif</option>
+                    <option value="FreeMono">FreeMono</option>
+                    <option value="Hack Nerd Font">Hack Nerd Font</option>
+                </select>
+            </div>
 
             <div class="form-group">
                 <label for="doc-title">Title:</label>
@@ -27,18 +61,7 @@
 
             <button id="btn-add-section">+ Add Section</button>
             <button id="btn-generate">Generate PDF</button>
-            <button
-                id="btn-download"
-                style="
-                    margin-top: 10px;
-                    background-color: #ff9800;
-                    color: white;
-                    width: 100%;
-                    font-size: 16px;
-                "
-            >
-                Download PDF
-            </button>
+            <button id="btn-download">Download PDF</button>
         </div>
 
         <!-- Main area for the PDF -->
@@ -46,121 +69,7 @@
             <embed id="pdf-viewer" type="application/pdf" />
         </div>
 
-        <script type="module">
-            import init, { generate_pdf } from "./pkg/typstforge_web.js";
-
-            const sectionsContainer =
-                document.getElementById("sections-container");
-            const btnAddSection = document.getElementById("btn-add-section");
-            const btnGenerate = document.getElementById("btn-generate");
-            const btnDownload = document.getElementById("btn-download");
-
-            let currentPdfUrl = null;
-
-            // Function to add a new section input box to the HTML
-            function createSectionBox(title = "", content = "") {
-                const div = document.createElement("div");
-                div.className = "section-box";
-
-                div.innerHTML = `
-                    <div class="form-group">
-                        <label>Section Title</label>
-                        <input type="text" class="sec-title" value="${title}">
-                    </div>
-                    <div class="form-group">
-                        <label>Content</label>
-                        <textarea class="sec-content" rows="3">${content}</textarea>
-                    </div>
-                    <button class="btn-remove-section">Remove</button>
-                `;
-
-                // Add event listener to the remove button
-                div.querySelector(".btn-remove-section").addEventListener(
-                    "click",
-                    () => {
-                        div.remove();
-                    },
-                );
-
-                sectionsContainer.appendChild(div);
-            }
-
-            init().then(() => {
-                // Initialize with one default section
-                createSectionBox("Introduction", "This is the introduction.");
-
-                // When user clicks "Add Section"
-                btnAddSection.addEventListener("click", () => {
-                    createSectionBox();
-                });
-
-                // When user clicks "Generate PDF"
-                btnGenerate.addEventListener("click", () => {
-                    // 1. Gather all data from the HTML inputs
-                    const title = document.getElementById("doc-title").value;
-                    const date = document.getElementById("doc-date").value;
-
-                    const sections = [];
-                    const sectionBoxes =
-                        document.querySelectorAll(".section-box");
-
-                    sectionBoxes.forEach((box) => {
-                        sections.push({
-                            title: box.querySelector(".sec-title").value,
-                            content: box.querySelector(".sec-content").value,
-                        });
-                    });
-
-                    // 2. Create the exact Javascript object that matches your Rust Inputs struct
-                    const inputData = {
-                        title: title,
-                        date: date,
-                        sections: sections,
-                    };
-
-                    // 3. Send the Javascript object to Rust!
-                    try {
-                        const pdfBytes = generate_pdf(inputData);
-                        const blob = new Blob([pdfBytes], {
-                            type: "application/pdf",
-                        });
-
-                        // Clean up the old URL to prevent memory leaks
-                        if (currentPdfUrl) {
-                            URL.revokeObjectURL(currentPdfUrl);
-                        }
-
-                        currentPdfUrl = URL.createObjectURL(blob);
-                        document.getElementById("pdf-viewer").src =
-                            currentPdfUrl;
-                    } catch (error) {
-                        console.error("Typst generation failed:", error);
-                        alert("Typst error: " + error);
-                    }
-                });
-
-                // When user clicks "Download PDF"
-                btnDownload.addEventListener("click", () => {
-                    if (!currentPdfUrl) {
-                        alert("Please generate the PDF first.");
-                        return;
-                    }
-
-                    // Create a temporary anchor tag to trigger the download
-                    const title =
-                        document.getElementById("doc-title").value ||
-                        "document";
-                    const a = document.createElement("a");
-                    a.href = currentPdfUrl;
-                    a.download = `${title}.pdf`;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                });
-
-                // Automatically generate PDF on first load
-                btnGenerate.click();
-            });
-        </script>
+        <!-- Link the newly extracted JavaScript file -->
+        <script type="module" src="app.js"></script>
     </body>
 </html>
