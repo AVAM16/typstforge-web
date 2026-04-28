@@ -1,17 +1,25 @@
 #import sys: inputs
 
-#set page(paper: "a4")
-#set text(font: inputs.font, 11pt)
+#set page(paper: "a4", margin: 2cm)
+#set text(font: inputs.font, size: inputs.font_size * 1pt)
 
-#text(size: 14pt)[#align(center)[*#inputs.title*]]
+// Title
+#align(center)[
+  *#inputs.title*
+]
 
-Date: #inputs.date
+#v(0.5em)
 
-#v(1em)
+// Date
+Date: _ #inputs.date _
 
+#v(1.5em)
+
+// Sections
 #for item in inputs.sections [
   #item.title
 
   #item.content
+
   #v(1em)
 ]

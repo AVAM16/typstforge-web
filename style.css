@@ -58,7 +58,9 @@ body {
     font-weight: bold;
 }
 
-.form-group input,
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
 .form-group textarea,
 .form-group select {
     width: 100%;
@@ -67,6 +69,68 @@ body {
     background-color: var(--input-bg);
     color: var(--input-text);
     border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+/* Range slider styling */
+.form-group input[type="range"] {
+    width: 100%;
+    height: 8px;
+    border-radius: 5px;
+    background: linear-gradient(
+        to right,
+        #008cba 0%,
+        #008cba 0%,
+        #ddd 0%,
+        #ddd 100%
+    );
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.form-group input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #008cba;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.form-group input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #008cba;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.form-group input[type="range"]::-moz-range-track {
+    background: transparent;
+    border: none;
+}
+
+body.dark-mode .form-group input[type="range"] {
+    background: linear-gradient(
+        to right,
+        #66b3e0 0%,
+        #66b3e0 0%,
+        #444 0%,
+        #444 100%
+    );
+}
+
+body.dark-mode .form-group input[type="range"]::-webkit-slider-thumb {
+    background: #66b3e0;
+}
+
+body.dark-mode .form-group input[type="range"]::-moz-range-thumb {
+    background: #66b3e0;
 }
 
 .section-box {
@@ -112,6 +176,19 @@ button {
 #btn-download {
     margin-top: 10px;
     background-color: #ff9800;
+    color: white;
+    width: 100%;
+    font-size: 16px;
+    padding: 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+
+#theme-toggle {
+    margin-top: 20px;
+    background-color: #555;
     color: white;
     width: 100%;
     font-size: 16px;

@@ -5,6 +5,7 @@ use wasm_bindgen::prelude::*;
 #[derive(Deserialize, IntoValue, IntoDict)]
 struct Inputs {
     pub font: String,
+    pub font_size: i32,
     pub title: String,
     pub date: String,
     pub sections: Vec<Section>,

@@ -6,6 +6,19 @@ const btnGenerate = document.getElementById("btn-generate");
 const btnDownload = document.getElementById("btn-download");
 const fontSelect = document.getElementById("font-select");
 const btnThemeToggle = document.getElementById("btn-theme-toggle");
+const fontSizeInput = document.getElementById("font-size");
+const fontSizeValue = document.getElementById("font-size-value");
+
+const syncFontSizeLabel = () => {
+  if (!fontSizeInput || !fontSizeValue) {
+    return;
+  }
+  fontSizeValue.textContent = fontSizeInput.value;
+};
+
+syncFontSizeLabel();
+fontSizeInput?.addEventListener("input", syncFontSizeLabel);
+fontSizeInput?.addEventListener("change", syncFontSizeLabel);
 
 let currentPdfUrl = null;
 
@@ -56,6 +69,10 @@ init().then(() => {
   btnGenerate.addEventListener("click", () => {
     // 1. Gather all data from the HTML inputs
     const selectedFont = fontSelect.value || "FreeSans";
+    const selectedFontSize = (() => {
+      const v = parseInt(fontSizeInput.value, 10);
+      return Number.isInteger(v) ? v : 11;
+    })();
     const title = document.getElementById("doc-title").value;
     const date = document.getElementById("doc-date").value;
 
@@ -72,6 +89,7 @@ init().then(() => {
     // 2. Create the exact Javascript object that matches your Rust Inputs struct
     const inputData = {
       font: selectedFont,
+      font_size: selectedFontSize,
       title: title,
       date: date,
       sections: sections,
