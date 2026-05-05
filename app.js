@@ -27,7 +27,7 @@ function createSectionBox(title = "", content = "") {
   const div = document.createElement("div");
   div.className = "section-box";
 
-  // Use textContent for values to avoid HTML injection when possible
+  // Section title
   const titleLabel = document.createElement("div");
   titleLabel.className = "form-group";
   titleLabel.innerHTML = `
@@ -36,6 +36,7 @@ function createSectionBox(title = "", content = "") {
     `;
   titleLabel.querySelector(".sec-title").value = title;
 
+  // Section content
   const contentLabel = document.createElement("div");
   contentLabel.className = "form-group";
   contentLabel.innerHTML = `
@@ -44,6 +45,19 @@ function createSectionBox(title = "", content = "") {
     `;
   contentLabel.querySelector(".sec-content").value = content;
 
+  // Image upload
+  const imageLabel = document.createElement("div");
+  imageLabel.className = "form-group";
+  imageLabel.innerHTML = `
+        <label>Image (Optional)</label>
+        <input type="file" class="sec-image" accept="image/*">
+        <div style="margin-top: 10px;">
+          <label>Image Width: <span class="sec-image-width-value">40</span>%</label>
+          <input type="range" class="sec-image-width" min="10" max="100" step="1" value="40" oninput="this.previousElementSibling.querySelector('.sec-image-width-value').textContent = this.value">
+        </div>
+    `;
+
+  // Remove button
   const removeBtn = document.createElement("button");
   removeBtn.className = "btn-remove-section";
   removeBtn.textContent = "Remove";
@@ -51,6 +65,7 @@ function createSectionBox(title = "", content = "") {
 
   div.appendChild(titleLabel);
   div.appendChild(contentLabel);
+  div.appendChild(imageLabel);
   div.appendChild(removeBtn);
 
   sectionsContainer.appendChild(div);
@@ -66,7 +81,7 @@ init().then(() => {
   });
 
   // When user clicks "Generate PDF"
-  btnGenerate.addEventListener("click", () => {
+  btnGenerate.addEventListener("click", async () => {
     // 1. Gather all data from the HTML inputs
     const selectedFont = fontSelect.value || "FreeSans";
     const selectedFontSize = (() => {
@@ -79,21 +94,43 @@ init().then(() => {
     const sections = [];
     const sectionBoxes = document.querySelectorAll(".section-box");
 
-    sectionBoxes.forEach((box) => {
+    for (const box of sectionBoxes) {
+      let imageData = null;
+      const fileInput = box.querySelector(".sec-image");
+      if (fileInput && fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const arrayBuffer = await file.arrayBuffer();
+        imageData = Array.from(new Uint8Array(arrayBuffer));
+      }
+
+      const widthInput = box.querySelector(".sec-image-width");
+      const imageWidthPercent = widthInput
+        ? parseInt(widthInput.value, 10)
+        : 40;
+
       sections.push({
         title: box.querySelector(".sec-title").value,
         content: box.querySelector(".sec-content").value,
+        image_data: imageData,
+        image_width_percent: imageWidthPercent,
       });
-    });
+    }
 
     // 2. Create the exact Javascript object that matches your Rust Inputs struct
     const inputData = {
-      font: selectedFont,
-      font_size: selectedFontSize,
       title: title,
       date: date,
       sections: sections,
     };
+
+    if (selectedFont && selectedFont !== "default") {
+      inputData.font = selectedFont;
+    }
+    // We only send font_size if it's explicitly set by the user or if we want to force it
+    // But since it's an Option, let's always send the value of the slider
+    if (selectedFontSize) {
+      inputData.font_size = selectedFontSize;
+    }
 
     // 3. Send the Javascript object to Rust!
     try {

@@ -1,11 +1,14 @@
 #import sys: inputs
 
 #set page(paper: "a4", margin: 2cm)
-#set text(font: inputs.font, size: inputs.font_size * 1pt)
+#set text(
+  font: if inputs.at("font", default: none) != none { inputs.font } else { "FreeSans" },
+  size: if inputs.at("font_size", default: none) != none { inputs.font_size * 1pt } else { 11pt },
+)
 
 // Title
 #align(center)[
-  *#inputs.title*
+  = #inputs.title
 ]
 
 #v(0.5em)
@@ -17,9 +20,19 @@ Date: _ #inputs.date _
 
 // Sections
 #for item in inputs.sections [
-  #item.title
+  #if item.title.len() > 0 [
+    == #item.title
+  ]
 
-  #item.content
+  #if item.content.len() > 0 [
+    #eval(item.content, mode: "markup")
+  ]
+
+  #if item.at("image_data", default: none) != none [
+    #align(center)[
+      #image.decode(bytes(item.image_data.map(int)), width: item.at("image_width_percent", default: 40) * 1%)
+    ]
+  ]
 
   #v(1em)
 ]

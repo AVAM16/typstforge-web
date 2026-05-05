@@ -4,8 +4,10 @@ use wasm_bindgen::prelude::*;
 
 #[derive(Deserialize, IntoValue, IntoDict)]
 struct Inputs {
-    pub font: String,
-    pub font_size: i32,
+    #[serde(default)]
+    pub font: Option<String>,
+    #[serde(default)]
+    pub font_size: Option<i32>,
     pub title: String,
     pub date: String,
     pub sections: Vec<Section>,
@@ -15,6 +17,10 @@ struct Inputs {
 struct Section {
     pub title: String,
     pub content: String,
+    #[serde(default)]
+    pub image_data: Option<Vec<u8>>,
+    #[serde(default)]
+    pub image_width_percent: Option<i32>,
 }
 
 #[wasm_bindgen]
