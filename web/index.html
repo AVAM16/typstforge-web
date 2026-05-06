@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <title>Typst Forge</title>
+        <!-- Added a query parameter to cache-bust the CSS -->
+        <link rel="stylesheet" href="style.css?v=1" />
+        <link
+            rel="icon"
+            href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75' fill='%23008cba'>T</text></svg>"
+        />
+    </head>
+    <body>
+        <!-- Sidebar containing the form -->
+        <div id="sidebar">
+            <div
+                style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 15px;
+                "
+            >
+                <h2 style="margin: 0">Document Settings</h2>
+                <button id="btn-theme-toggle">Toggle Theme</button>
+            </div>
+
+            <div class="form-group">
+                <label for="font-select">Font:</label>
+                <select id="font-select">
+                    <option value="default" selected>FreeSans (Default)</option>
+                    <option value="FreeSerif">FreeSerif</option>
+                    <option value="FreeMono">FreeMono</option>
+                    <option value="Hack Nerd Font">Hack Nerd Font</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <!--slider going from 5pt to 25pt, display the selected number-->
+                <label for="font-size">
+                    Font Size: <span id="font-size-value">11</span>
+                </label>
+                <input
+                    type="range"
+                    id="font-size"
+                    min="5"
+                    max="25"
+                    step="1"
+                    value="11"
+                    oninput="
+                        document.getElementById('font-size-value').textContent =
+                            this.value
+                    "
+                    onchange="
+                        document.getElementById('font-size-value').textContent =
+                            this.value
+                    "
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="doc-title">Title:</label>
+                <input type="text" id="doc-title" value="Title" />
+            </div>
+
+            <div class="form-group">
+                <label for="doc-date">Date:</label>
+                <input type="text" id="doc-date" value="Date" />
+            </div>
+
+            <h3>Sections</h3>
+            <div id="sections-container">
+                <!-- Javascript will inject section boxes here -->
+            </div>
+
+            <button id="btn-add-section">+ Add Section</button>
+            <button id="btn-generate">Generate PDF</button>
+            <button id="btn-download">Download PDF</button>
+            <button
+                id="btn-help"
+                style="
+                    margin-top: 10px;
+                    background-color: #607d8b;
+                    color: white;
+                    width: 100%;
+                    font-size: 16px;
+                    padding: 12px;
+                    border-radius: 4px;
+                    font-weight: bold;
+                    border: none;
+                    cursor: pointer;
+                "
+            >
+                Help (?)
+            </button>
+        </div>
+
+        <!-- Main area for the PDF -->
+        <div id="viewer-container">
+            <embed id="pdf-viewer" type="application/pdf" />
+        </div>
+
+        <!-- Link the newly extracted JavaScript file -->
+        <script type="module" src="app.js"></script>
+    </body>
+</html>

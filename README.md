@@ -17,10 +17,10 @@ To run the project locally, you can use the following commands in your terminal:
 
 ```bash
 # build the project (add the --dev flag for faster builds)
-wasm-pack build --target web
+wasm-pack build --target web --out-dir web/pkg
 
 # serve the project
-python3 -m http.server
+python3 -m http.server --directory web
 ```
 
 Go to `http://localhost:8000` in your browser to see the project in action.

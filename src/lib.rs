@@ -30,7 +30,10 @@ extern "C" {
 
 #[wasm_bindgen]
 pub fn greet(name: &str) {
-    alert(&format!("Hello, {}!", name));
+    alert(&format!(
+        "For writing italic put _ around the word, for writing bold put * around the word. Welcome {} user!",
+        name
+    ));
 }
 
 #[wasm_bindgen]

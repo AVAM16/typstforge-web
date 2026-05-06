@@ -1,0 +1,33 @@
+/* tslint:disable */
+/* eslint-disable */
+export const memory: WebAssembly.Memory;
+export const generate_pdf: (a: any) => [number, number, number];
+export const greet: (a: number, b: number) => void;
+export const rust_zstd_wasm_shim_calloc: (a: number, b: number) => number;
+export const rust_zstd_wasm_shim_free: (a: number) => void;
+export const rust_zstd_wasm_shim_malloc: (a: number) => number;
+export const rust_zstd_wasm_shim_memcmp: (a: number, b: number, c: number) => number;
+export const rust_zstd_wasm_shim_memcpy: (a: number, b: number, c: number) => number;
+export const rust_zstd_wasm_shim_memmove: (a: number, b: number, c: number) => number;
+export const rust_zstd_wasm_shim_memset: (a: number, b: number, c: number) => number;
+export const rust_zstd_wasm_shim_qsort: (a: number, b: number, c: number, d: number) => void;
+export const qcms_enable_iccv4: () => void;
+export const qcms_profile_precache_output_transform: (a: number) => void;
+export const qcms_transform_data_bgra_out_lut: (a: number, b: number, c: number, d: number) => void;
+export const qcms_transform_data_bgra_out_lut_precache: (a: number, b: number, c: number, d: number) => void;
+export const qcms_transform_data_rgb_out_lut: (a: number, b: number, c: number, d: number) => void;
+export const qcms_transform_data_rgb_out_lut_precache: (a: number, b: number, c: number, d: number) => void;
+export const qcms_transform_data_rgba_out_lut: (a: number, b: number, c: number, d: number) => void;
+export const qcms_transform_data_rgba_out_lut_precache: (a: number, b: number, c: number, d: number) => void;
+export const qcms_transform_release: (a: number) => void;
+export const qcms_profile_is_bogus: (a: number) => number;
+export const qcms_white_point_sRGB: (a: number) => void;
+export const lut_inverse_interp16: (a: number, b: number, c: number) => number;
+export const lut_interp_linear16: (a: number, b: number, c: number) => number;
+export const __wbindgen_malloc: (a: number, b: number) => number;
+export const __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
+export const __wbindgen_exn_store: (a: number) => void;
+export const __externref_table_alloc: () => number;
+export const __wbindgen_externrefs: WebAssembly.Table;
+export const __externref_table_dealloc: (a: number) => void;
+export const __wbindgen_start: () => void;
